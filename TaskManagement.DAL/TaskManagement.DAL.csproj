@@ -10,12 +10,8 @@
   	<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
   	<GenerateDocumentationFile>false</GenerateDocumentationFile>
   	<OutputType>Library</OutputType>
-  	<NoWarn>SA1633,SA1600,SA0001</NoWarn>
+  	<NoWarn>SA1011,SA1633,SA1600,SA0001</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
 
   <ItemGroup>
   	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

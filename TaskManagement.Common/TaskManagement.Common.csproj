@@ -13,9 +13,5 @@
   	  <PrivateAssets>all</PrivateAssets>
   	</PackageReference>
   </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
 </Project>
     

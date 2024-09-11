@@ -1,8 +1,8 @@
 ﻿namespace TaskManagement.DAL.Models;
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using TaskManagement.Common.Enums;
 
 public class Task : BaseEntity
@@ -30,5 +30,6 @@ public class Task : BaseEntity
     [ForeignKey("User")]
     public Guid UserId { get; set; }
 
+    [JsonIgnore]
     public User User { get; set; } = null!;
 }

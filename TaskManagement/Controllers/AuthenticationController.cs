@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Controllers;
+﻿namespace TaskManagement.API.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,5 +6,4 @@ using Microsoft.AspNetCore.Mvc;
 [Route("controller")]
 public class AuthenticationController : ControllerBase
 {
-
 }
