@@ -33,18 +33,20 @@ internal class UserService : IUserService
     /// <returns>A task representing the asynchronous operation. The task result contains a boolean value indicating success.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the provided <paramref name="dto"/> is null.</exception>
     /// <exception cref="ConflictException">Thrown when a user with the same email or username already exists.</exception>
-    public async Task<bool> Register(UserRegistrationDto dto)
+    public async Task<bool> RegisterAsync(UserRegistrationDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
         var userRepo = this.unitOfWork.GetRepository<User>();
 
-        if (await userRepo.ExistsAsync(u => (u.Email == dto.Email || u.Username == dto.Username)).ConfigureAwait(false))
+        if (await userRepo.ExistsAsync(u => (u.Email == dto.Email.ToLowerInvariant() || u.Username == dto.Username.ToLowerInvariant())).ConfigureAwait(false))
         {
             throw new ConflictException($"User with such email or username already exists.");
         }
 
         var userModel = this.mapper.Map<User>(dto);
+
+        userModel.PasswordHash = PasswordHasherService.HashPassword(dto.Password);
         userModel.CreatedAt = DateTime.UtcNow;
         userModel.UpdatedAt = DateTime.UtcNow;
 
@@ -76,5 +78,17 @@ internal class UserService : IUserService
 
         await this.unitOfWork.CommitAsync().ConfigureAwait(false);
         return true;
+    }
+
+    public async Task<User> FindUserAsync(string login)
+    {
+        ArgumentNullException.ThrowIfNull(login);
+
+        var userRepo = this.unitOfWork.GetRepository<User>();
+
+        var user = await userRepo.GetAsync(u => u.Username == login || u.Email == login).ConfigureAwait(false)
+            ?? throw new NotFoundException("User with specified login not found");
+
+        return user;
     }
 }
