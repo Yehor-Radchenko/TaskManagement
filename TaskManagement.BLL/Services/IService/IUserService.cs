@@ -24,5 +24,10 @@ public interface IUserService
     /// <returns>A task representing the asynchronous operation. The task result contains a boolean value indicating success.</returns>
     Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto dto);
 
+    /// <summary>
+    /// Finds a user by their login information.
+    /// </summary>
+    /// <param name="login">The login identifier (e.g., username or email) of the user to find.</param>
+    /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="User"/> object if found, or <c>null</c> if not found.</returns>
     Task<User> FindUserAsync(string login);
 }

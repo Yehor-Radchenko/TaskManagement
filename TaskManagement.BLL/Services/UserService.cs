@@ -10,7 +10,7 @@ using TaskManagement.DAL.UoW;
 /// <summary>
 /// Provides services related to user management such as registration and password change.
 /// </summary>
-internal class UserService : IUserService
+public class UserService : IUserService
 {
     private readonly IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
@@ -39,7 +39,15 @@ internal class UserService : IUserService
 
         var userRepo = this.unitOfWork.GetRepository<User>();
 
-        if (await userRepo.ExistsAsync(u => (u.Email == dto.Email.ToLowerInvariant() || u.Username == dto.Username.ToLowerInvariant())).ConfigureAwait(false))
+        // Convert email and username to lowercase for comparison
+        var emailNormalized = dto.Email.ToUpperInvariant();
+        var usernameNormalized = dto.Username.ToUpperInvariant();
+
+        // Check if a user with the same email or username exists
+        if (await userRepo.ExistsAsync(u =>
+            (u.Email.ToUpperInvariant() == emailNormalized ||
+             u.Username.ToUpperInvariant() == usernameNormalized))
+            .ConfigureAwait(false))
         {
             throw new ConflictException($"User with such email or username already exists.");
         }
@@ -80,6 +88,13 @@ internal class UserService : IUserService
         return true;
     }
 
+    /// <summary>
+    /// Finds a user by their username or email.
+    /// </summary>
+    /// <param name="login">The username or email of the user to find.</param>
+    /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="User"/> that matches the specified login.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="login"/> is null.</exception>
+    /// <exception cref="NotFoundException">Thrown if no user with the specified login is found.</exception>
     public async Task<User> FindUserAsync(string login)
     {
         ArgumentNullException.ThrowIfNull(login);

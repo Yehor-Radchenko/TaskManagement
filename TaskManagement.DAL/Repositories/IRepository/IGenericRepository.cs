@@ -5,13 +5,17 @@ using System.Linq.Expressions;
 public interface IGenericRepository<T>
     where T : class
 {
-    Task<T?> GetAsync(Expression<Func<T, bool>>? filter = null, string[]? includeOptions = null);
+    Task<T?> GetAsync(Expression<Func<T, bool>> filter = null!, string[]? includeOptions = null);
 
-    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string[]? includeOptions = null);
+    Task<T?> GetAsync(Expression<Func<T, bool>>? filter);
+
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null!, string[]? includeOptions = null);
 
     Task<IEnumerable<T>> GetAllAsync(string[]? includeOptions = null);
 
-    IQueryable<T> GetAll(Expression<Func<T, bool>>? filter = null, string[]? includeOptions = null);
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter);
+
+    IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null!, string[]? includeOptions = null);
 
     IQueryable<T> GetAll(string[]? includeOptions = null);
 

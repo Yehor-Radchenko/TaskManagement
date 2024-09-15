@@ -3,8 +3,8 @@
 using AutoMapper;
 using TaskManagement.Common.Dto.User;
 using TaskManagement.DAL.Models;
-using TaskManagement.Common.Dto;
 using TaskManagement.BLL.Services;
+using TaskManagement.Common.Dto.Task;
 
 public class MappingProfile : Profile
 {
