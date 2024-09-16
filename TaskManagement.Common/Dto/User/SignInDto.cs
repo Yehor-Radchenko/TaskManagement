@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public class UserSignInDto
+public class SignInDto
 {
     [Required(ErrorMessage = "Username or email is required.")]
     public string Login { get; set; } = string.Empty;

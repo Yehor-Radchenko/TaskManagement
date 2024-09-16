@@ -36,7 +36,7 @@ public class GenericRepository<T> : IGenericRepository<T>
 
     public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string[]? includeOptions = null)
     {
-        IQueryable<T> query = this.dbSet;
+        IQueryable<T> query = this.dbSet.AsQueryable();
 
         if (filter != null)
         {
@@ -51,12 +51,12 @@ public class GenericRepository<T> : IGenericRepository<T>
             }
         }
 
-        return await Task.FromResult(query).ConfigureAwait(false);
+        return await query.ToListAsync().ConfigureAwait(false);
     }
 
     public virtual async Task<IEnumerable<T>> GetAllAsync(string[]? includeOptions = null)
     {
-        IQueryable<T> query = this.dbSet;
+        IQueryable<T> query = this.dbSet.AsQueryable();
 
         if (includeOptions != null)
         {
@@ -66,7 +66,19 @@ public class GenericRepository<T> : IGenericRepository<T>
             }
         }
 
-        return await Task.FromResult(query).ConfigureAwait(false);
+        return await query.ToListAsync().ConfigureAwait(false);
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter)
+    {
+        IQueryable<T> query = this.dbSet.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return await query.ToListAsync().ConfigureAwait(false);
     }
 
     public virtual IQueryable<T> GetAll(Expression<Func<T, bool>>? filter = null, string[]? includeOptions = null)
@@ -119,6 +131,18 @@ public class GenericRepository<T> : IGenericRepository<T>
             {
                 query = query.Include(entity);
             }
+        }
+
+        return await query.FirstOrDefaultAsync().ConfigureAwait(false);
+    }
+
+    public async Task<T?> GetAsync(Expression<Func<T, bool>>? filter)
+    {
+        IQueryable<T> query = this.dbSet;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
         }
 
         return await query.FirstOrDefaultAsync().ConfigureAwait(false);

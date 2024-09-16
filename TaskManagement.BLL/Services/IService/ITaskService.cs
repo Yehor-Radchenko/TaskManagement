@@ -2,16 +2,17 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TaskManagement.Common.Dto.Task;
 
-internal interface ITaskService
+public interface ITaskService
 {
-    Task<IEnumerable<DAL.Models.Task>> GetAllUserTasks();
+    Task<IEnumerable<DAL.Models.Task>> GetAllUserTasksAsync(Guid userId, TaskFilterDto filter = null!);
 
-    Task<DAL.Models.Task> GetTaskById(int taskId);
+    Task<DAL.Models.Task> GetTaskByIdAsync(Guid taskId, Guid userId);
 
-    Task<int> AddAsync(DAL.Models.Task task);
+    Task<Guid> AddTaskAsync(Guid userId, TaskDto taskDto);
 
-    Task<bool> DeleteAsync(int taskId);
+    Task<bool> DeleteTaskAsync(Guid userId, Guid taskId);
 
-    Task<bool> UpdateAsync(int taskId, DAL.Models.Task task);
+    Task<bool> UpdateTaskAsync(Guid userId, Guid taskId, TaskDto taskDto);
 }

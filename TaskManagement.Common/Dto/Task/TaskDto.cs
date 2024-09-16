@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Common.Dto;
+﻿namespace TaskManagement.Common.Dto.Task;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -14,15 +14,14 @@ public class TaskDto
     [MaxLength(200, ErrorMessage = "Description should be less than 200 symbols long.")]
     public string Description { get; set; } = string.Empty;
 
-    [FutureDateAttribute]
+    [FutureDate]
     public DateTime? DueDate { get; set; }
 
     [Required(ErrorMessage = "Task Status is required.")]
-    public Common.Enums.TaskStatus Status { get; set; }
+    [ValidEnumValue(typeof(TaskStatus), ErrorMessage = "Invalid Task Status value.")]
+    public TaskStatus Status { get; set; }
 
     [Required(ErrorMessage = "Task Priority is required.")]
+    [ValidEnumValue(typeof(TaskPriority), ErrorMessage = "Invalid Task Priority value.")]
     public TaskPriority Priority { get; set; }
-
-    [ForeignKey("User")]
-    public Guid UserId { get; set; }
 }
