@@ -18,8 +18,10 @@ public class TaskDto
     public DateTime? DueDate { get; set; }
 
     [Required(ErrorMessage = "Task Status is required.")]
+    [ValidEnumValue(typeof(TaskStatus), ErrorMessage = "Invalid Task Status value.")]
     public TaskStatus Status { get; set; }
 
     [Required(ErrorMessage = "Task Priority is required.")]
+    [ValidEnumValue(typeof(TaskPriority), ErrorMessage = "Invalid Task Priority value.")]
     public TaskPriority Priority { get; set; }
 }
